@@ -1,8 +1,9 @@
+
 myremoveduplicates :: Eq a => [a] -> [a]
 myremoveduplicates [] = []
 myremoveduplicates list
-  | (head list) `elem` (tail list) = myremoveduplicates (tail list)
-  | otherwise = (head list) : myremoveduplicates (tail list)
+  | head list `elem` tail list = myremoveduplicates (tail list)
+  | otherwise = head list : myremoveduplicates (tail list)
 
 myremoveduplicates_pm :: Eq a => [a] -> [a]
 myremoveduplicates_pm [] = []
@@ -31,11 +32,9 @@ mynthtail n list
   | otherwise = mynthtail (n - 1) (tail list)
 
 mynthtail_pm :: Int -> [a] -> [a]
-mynthtail_pm n xs
-  | n <= 0 = xs
-  | null xs = []
-  | otherwise = mynthtail_pm (n-1) (tail xs)
-
+mynthtail_pm 0 (x:xs) = (x:xs)
+mynthtail_pm _ [] = []
+mynthtail_pm n (x:xs) = mynthtail_pm (n - 1) xs
 
 
 mylast :: [a] -> [a]
@@ -51,18 +50,17 @@ mylast_pm (_:xs) = mylast xs
 
 myreverse :: [a] -> [a]
 myreverse xs = revAcc xs []
--- Helper function for myreverse
 revAcc :: [a] -> [a] -> [a]
 revAcc xs acc
   | null xs = acc
-  | otherwise = revAcc (tail xs) ((head xs) : acc)
+  | otherwise = revAcc (tail xs) (head xs : acc)
 
 
 myreverse_pm :: [a] -> [a]
-myreverse_pm xs = revAcc xs []
+myreverse_pm (x:xs) = revAcc (x:xs) []
 revAcc_pm :: [a] -> [a] -> [a]
-revAcc_pm [] acc = acc
-revAcc_pm (x:xs) acc = revAcc xs (x:acc)
+revAcc_pm [] (y:ys) = y:ys
+revAcc_pm (x:xs) (y:ys) = revAcc (x:xs)  (x:y:ys)
 
 myreplaceall :: Eq a => a -> a -> [a] -> [a]
 myreplaceall x y list
@@ -88,7 +86,8 @@ myordered_pm [] = True
 myordered_pm [x] = True
 myordered_pm (x:y:xs) = x <= y && myordered_pm (y:xs)
 
-
+-- Learned this string parser function from ChatGPT
+-- Learned the 'where' statement from ChatGPT
 computeFees :: String -> Int
 computeFees input = case studentType of
   "Y" -> if hasFinancialAid == "Y"
