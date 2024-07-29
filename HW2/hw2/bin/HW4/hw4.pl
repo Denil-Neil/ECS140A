@@ -8,14 +8,17 @@ double([H|T1], [H,H|T2]) :-
     double(T1, T2).
 
 
+
 no_duplicates([], []).
 no_duplicates([H|T], L2) :-
     member(H, T),
     no_duplicates(T, L2).
-no_duplicates([H|T], [H|T1]) :-
-    \+ member(H, T),
-    no_duplicates(T, T1).
 
-same_elements(L1, L2) :-
-    msort(L1, Sorted),
-    msort(L2, Sorted).
+same_elements([], []).
+same_elements([H|T], L2) :-
+    select_and_remove(H, L2, L2Rest),
+    same_elements(T, L2Rest).
+
+select_and_remove(X, [X|T], T).
+select_and_remove(X, [H|T], [H|R]) :-
+    select_and_remove(X, T, R).
