@@ -13,7 +13,10 @@ no_duplicates([], []).
 no_duplicates([H|T], L2) :-
     member(H, T),
     no_duplicates(T, L2).
-
+no_duplicates([H|T], [H|T1]) :-
+    \+ member(H, T),
+    no_duplicates(T, T1).
+    
 same_elements([], []).
 same_elements([H|T], L2) :-
     select_and_remove(H, L2, L2Rest),
